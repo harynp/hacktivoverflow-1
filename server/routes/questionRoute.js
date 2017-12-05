@@ -6,7 +6,7 @@ const jwt = require('../helper/jsonWebToken');
 
 router.get('/', questionCtrl.findAll)
 router.get('/:id', questionCtrl.findById)
-router.post('/', questionCtrl.create)
+router.post('/', jwt.isLogin, questionCtrl.create)
 router.put('/:id', questionCtrl.edit)
 router.delete('/:id', questionCtrl.delete)
 router.delete('/', questionCtrl.deleteAll)

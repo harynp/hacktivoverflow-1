@@ -43,17 +43,12 @@
     </div>
     <!-- KUMPULAN ANSWER -->
     <div class="well" v-for="answer in AnswerQuestion">
+      <i class="fa fa-user" aria-hidden="true"> {{answer.id_user.username}}</i>
      <div class="panel panel-default">
          <h5>{{ answer.content }}</h5>
      </div>
-     <div class="pull-right">
-       <a class="like">
-         <i class="fa fa-thumbs-o-up"></i>  Like
-       </a>
-       <a class="dislike">
-         <i class="fa fa-thumbs-o-down"></i> Dislike
-       </a>
-     </div>
+      <button v-if="answer.id_user._id === form.userId" class="btn btn-danger fa fa-trash-o" type="button" name="button" @click.prevent="deleteAnswer(answer._id)"></button>
+      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button"></button>
     </div>
    <!--  -->
   </div>
@@ -69,7 +64,8 @@ props: ['id'],
         content: "",
         userId: localStorage.getItem('idUser'),
         id_question: this.id
-      }
+      },
+      name: localStorage.getItem('name')
     }
   },
   computed: {
@@ -82,7 +78,8 @@ props: ['id'],
     ...mapActions([
       'getQuestionsById',
       'postAnswer',
-      'getAllAnswer'
+      'getAllAnswer',
+      'deleteAnswer'
     ]),
     postDua (payload) {
       this.postAnswer(payload)

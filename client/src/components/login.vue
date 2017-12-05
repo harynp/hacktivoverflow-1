@@ -41,7 +41,9 @@ export default {
         } else {
           localStorage.setItem('token', data)
           localStorage.setItem('idUser', decoded.id)
-          this.$router.push('/ ')
+          localStorage.setItem('name', decoded.username)
+          this.$router.push('/')
+          window.location.reload()
         }
       })
       .catch((err) => console.error(err))

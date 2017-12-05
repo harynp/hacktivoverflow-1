@@ -30,7 +30,6 @@ const state = {
 
 const mutations = {
   setAllQuestions (state, payload) {
-    console.log('ini mutations', payload)
     state.ArrQuestions = payload
   },
   setPostQuestions (state, payload) {
@@ -44,7 +43,6 @@ const mutations = {
     state.ArrQuestionsById = payload
   },
   setAnswerData (state,payload) {
-    console.log('INI DI MUTATIONS BROO',payload);
     state.AnswerQuestion = payload
   },
   setPostAnswer (state,payload) {
@@ -85,7 +83,6 @@ const actions = {
   },
 
   getQuestionsById ({commit}, IdQuestions) {
-    console.log('TESASDDADAS')
     http.get(`/questions/${IdQuestions}`)
     .then(({data}) => {
       commit('setIdQuestions', data)
@@ -114,10 +111,8 @@ const actions = {
   },
 
   getAllAnswer ({ commit }, payload) {
-    console.log('INI PAYLOAD', payload);
       http.get(`/answers/find/`+ payload)
       .then(({data}) => {
-        console.log('ISI DATANYA GETANSWER', data);
         commit('setAnswerData', data)
       })
       .catch(err => {
@@ -136,7 +131,6 @@ const actions = {
       }
     })
     .then(dataAnswer => {
-      console.log('KAMPREEETTT',dataAnswer);
       if (dataAnswer.data.name === 'JsonWebTokenError') {
         console.log('GAGAL POST ANSWER')
       } else {
@@ -149,9 +143,13 @@ const actions = {
   },
 
   deleteAnswer ({commit}, idAnswers) {
-    http.delete(`/answers/${idAnswers._id}`)
+    http.delete(`/answers/${idAnswers}`, {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    })
     .then(({data}) => {
-      commit('setDeleteAnswer')
+      commit('setDeleteAnswer', data)
     })
     .catch(err => {
       res.send(err)
@@ -164,9 +162,9 @@ const actions = {
       password: payload.password
     })
     .then(response => {
-      console.log('this is login response  ', response.data.token)
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('idUser', response.data._id)
+      localStorage.setItem('name', response.data.username)
       http.get('users/info', {
         headers: {
           token: response.data.token
@@ -179,7 +177,6 @@ const actions = {
         commit('setLogin', {objToken: response.data, objUser: result.data})
       })
       .catch(err => {
-        alert('Error get user INFO')
         console.log('THIS IS ERROR LOGIN >> ' + JSON.stringify(err))
       })
     })
@@ -212,7 +209,7 @@ const actions = {
           commit('setLogin', { objToken: {token: localStorage.token}, objUser: result.data })
         } else {
           localStorage.clear()
-          this.$router.push('/')
+          // this.$router.push('/')
         }
       })
       .catch(err => {
