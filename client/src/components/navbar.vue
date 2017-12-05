@@ -27,8 +27,14 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
+        <li class="active" v-if="token">
+          <a @click="logout">Logout</a>
+        </li>
+        <li class="active" v-else>
+          <router-link to="/login">Login</router-link>
+        </li>
         <li class="active">
-          <router-link to="/">Login</router-link>
+          <router-link to="/register">Register</router-link>
         </li>
       </ul>
     </div>
@@ -38,6 +44,21 @@
 
 <script>
 export default {
+  data () {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
+  computed: {
+
+  },
+  methods: {
+    logout () {
+      this.status = false
+      localStorage.clear()
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 

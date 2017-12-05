@@ -2,14 +2,15 @@ const Users = require('../models/userModel');
 const jwt   = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
+require('dotenv').config()
 
 class userController {
   static all (req,res) {
     Users.find({}).then(result=>{
-      res.status(200).send(result)
+      res.send(result)
     })
     .catch(err=>{
-      res.status(500).send(err)
+      res.send(err)
     })
   }
 
@@ -25,20 +26,20 @@ class userController {
       email:req.body.email
     })
     .then(result=>{
-      res.status(200).send(result)
+      res.send(result)
     })
     .catch(err=>{
-      res.status(500).send(err)
+      res.send(err)
     })
   }
 
   static single (req,res) {
     Users.findOne({_id:req.params.id})
     .then(result=>{
-      res.status(200).send(result)
+      res.send(result)
     })
     .catch(err=>{
-      res.status(500).send(err)
+      res.send(err)
     })
   }
 
@@ -51,35 +52,38 @@ class userController {
       email:req.body.email
     })
     .then(result=>{
-      res.status(200).send(result)
+      res.send(result)
     })
     .catch(err=>{
-      res.status(500).send(err)
+      res.send(err)
     })
   }
 
   static remove (req,res) {
     Users.remove({_id:req.params.id})
-    .then(result => {
-      res.status(200).send(result)
+    .then(result=>{
+      res.send(result)
     })
-    .catch(err => {
-      res.status(500).send(err)
+    .catch(err=>{
+      res.send(err)
     })
   }
 
   static login (req,res) {
     Users.findOne({username:req.body.username})
     .then(data=>{
+      console.log('INI ISI DATA', data);
       if (bcrypt.compareSync(req.body.password, data.password)) {
         var token = jwt.sign({
           id       : data._id,
           username : data.username,
           email    : data.email
         }, process.env.SECRET_KEY)
-        res.status(200).send({token:token,msg:'berhasil'})
+        res.send(token)
       }else{
-        res.status(400).send('Wrong Password')
+        res.send(
+          'Wrong Password'
+        )
       }
     })
     .catch(err=>{
@@ -99,6 +103,7 @@ class userController {
     })
   }
 }
+
 
 
 module.exports = userController

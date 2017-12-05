@@ -4,7 +4,7 @@ const userCtrl = require('../controllers/usersControllers')
 
 router.get('/', userCtrl.all)
 router.get('/info', jwt.isLogin, userCtrl.userInfo)
-router.post('/', userCtrl.register)
+router.post('/register', userCtrl.register)
 router.delete('/', userCtrl.remove)
 router.post('/login', userCtrl.login)
 

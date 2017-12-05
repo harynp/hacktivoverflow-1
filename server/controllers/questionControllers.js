@@ -28,7 +28,6 @@ class questionControllers {
         id_user  : req.body.id_user,
         title    : req.body.title,
         content  : req.body.content
-        // imgUrl	 : req.file.cloudStoragePublicUrl
       })
       .then(data => {
         res.status(200).send(data)
@@ -73,6 +72,77 @@ class questionControllers {
     })
     .catch(err => {
       res.status(500).send(err)
+    })
+  }
+
+  static voteUp (req,res,next) {
+    question.findOneAndUpdate(
+      {_id:req.body.id_question},
+      {$pull:{vote_down:req.body.id}}
+    )
+    .then(resultPull=>{
+      question.findOneAndUpdate(
+        { _id: req.body.id_question },
+        {$addToSet: { vote_up: req.body.id }}
+      )
+        .then(resultPush => {
+          next()
+        })
+        .catch(err => {
+          res.send(err)
+        })
+    })
+    .catch(err=>{
+      res.send(err)
+    })
+  }
+
+  static voteDown (req,res,next) {
+    question.updateOne(
+      { _id: req.body.id_question },
+      { $pull: { vote_up: req.body.id } }
+    )
+    .then(resultPull =>{
+      question.updateOne(
+        { _id: req.body.id_question },
+        { $addToSet: { vote_down: req.body.id } }
+      )
+        .then(resultPush => {
+          next()
+        })
+        .catch(err => {
+          res.send(err)
+        })
+    })
+    .catch(err=>{
+      res.send(err)
+    })
+  }
+
+  static pushAnswer (req,res) { // called in answer routes
+    question.update(
+      { _id: req.body.id_question },//idQuestion
+      {
+        $push: { answer: req.body.id_answer }// idAnswer
+      })
+      .then(resultQuestion => {
+        console.log('hahahahha ' + JSON.stringify(resultQuestion))
+        res.send(resultQuestion)
+      })
+      .catch(err => { console.log(err) })
+  }
+
+  static pullAnswer (req,res) { // called in answer routes
+    question.update(
+      { _id: req.body.id_question }, // id question
+      {
+        $pull: { answer: req.params.id } // id answer
+    })
+    .then(hasil => {
+      res.send(hasil)
+    })
+    .catch(err => {
+      res.send('error')
     })
   }
 }
