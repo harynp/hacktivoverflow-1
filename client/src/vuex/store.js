@@ -25,7 +25,9 @@ const state = {
     answer: null,
     questionId: null
   },
-  userQuestion: null
+  userQuestion: null,
+  vote_up: [],
+  vote_down: []
 }
 
 const mutations = {
@@ -200,7 +202,7 @@ const actions = {
   checkLogin ({ commit }, payload) {
     http.get('users/info', {
       headers: {
-        token: localStorage.token
+        token: localStorage.getItem('token')
       }
     })
       .then(result => {
@@ -209,7 +211,7 @@ const actions = {
           commit('setLogin', { objToken: {token: localStorage.token}, objUser: result.data })
         } else {
           localStorage.clear()
-          // this.$router.push('/')
+          this.$router.push('/login')
         }
       })
       .catch(err => {
@@ -217,6 +219,21 @@ const actions = {
         localStorage.clear()
         console.log('THIS IS ERROR CHECK LOGIN >> ' + JSON.stringify(err))
       })
+  },
+
+  vote ({commit}, payload) {
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/answers/voteup/${payload.id_question}`, payload, config)
+    .then(({data}) => {
+      console.log('TES',data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 }
 

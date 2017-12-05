@@ -9,7 +9,8 @@ router.get('/', answerCtrl.alls)
 router.get('/find/:id_question', answerCtrl.findByIdQuestion)
 router.post('/', jwt.isLogin, answerCtrl.add, questionCtrl.pushAnswer)
 router.delete('/:id', answerCtrl.remove, questionCtrl.pullAnswer)
-router.post('/voteup/:id_question', jwt.isLogin, answerCtrl.voteUp, answerCtrl.findByIdQuestion)
-router.post('/votedown/:id_question', jwt.isLogin, answerCtrl.voteDown, answerCtrl.findByIdQuestion)
+
+router.put('/voteup/:id_question', jwt.isLogin, answerCtrl.voteUp, answerCtrl.findByIdQuestion)
+// router.put('/votedown/:id_question', jwt.isLogin, answerCtrl.voteDown, answerCtrl.findByIdQuestion)
 
 module.exports = router;

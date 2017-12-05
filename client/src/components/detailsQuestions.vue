@@ -48,7 +48,7 @@
          <h5>{{ answer.content }}</h5>
      </div>
       <button v-if="answer.id_user._id === form.userId" class="btn btn-danger fa fa-trash-o" type="button" name="button" @click.prevent="deleteAnswer(answer._id)"></button>
-      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button"></button>
+      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="vote(answer.id_user._id)"></button>
     </div>
    <!--  -->
   </div>
@@ -79,7 +79,8 @@ props: ['id'],
       'getQuestionsById',
       'postAnswer',
       'getAllAnswer',
-      'deleteAnswer'
+      'deleteAnswer',
+      'vote'
     ]),
     postDua (payload) {
       this.postAnswer(payload)

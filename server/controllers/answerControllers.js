@@ -33,26 +33,35 @@ class answerController {
     })
   }
 
-  static voteUp (req,res,next) {
-    answer.findOneAndUpdate(
-      {_id: req.body.id_answer},
-      {$pull: { vote_down: req.body.id }}
+  // static voteUp (req,res,next) {
+  //   answer.findByIdAndUpdate(req.params.id,
+  //   {$push:{"like": req.body._id}},
+  //   {safe: true, upsert: true}
+  // )
+  // .then(rows=>{
+  //   res.status(200).json({
+  //     "message":"data updated",
+  //     "data":rows
+  //   });
+  // })
+  // .catch(err=>{
+  //   res.status(400).json(err)
+  // })
+  // }
+
+  static voteUp(req,res,next){
+    answer.findByIdAndUpdate(req.params.id,
+      {$push:{"vote_up": req.body._id}},
+      {safe: true, upsert: true}
     )
-    .then(result=>{
-      answer.findOneAndUpdate(
-        { _id: req.body.id_answer },
-        { $addToSet: { vote_up: req.body.id } }
-      )
-        .then(result => {
-          console.log('+++++ ', result)
-          next()
-        })
-        .catch(err => {
-          res.send(err)
-        })
+    .then(rows=>{
+      res.status(200).json({
+        "message":"data updated",
+        "data":rows
+      });
     })
     .catch(err=>{
-      res.send(err)
+      res.status(400).json(err)
     })
   }
 
