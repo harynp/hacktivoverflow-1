@@ -29,47 +29,16 @@ export default {
   },
   computed: {
     ...mapState([
-      'ArrQuestions'
+      'ArrQuestions',
+      'vote_upx'
     ])
   },
   methods: {
     ...mapActions([
-      'getQuestions'
-    ]),
-    voteUpQx (payload) {
-      var config = {
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }
-      this.$http.put(`/questions/${payload.questionId}/voteup`, {
-        userId: payload.userId
-      }, config)
-      .then(({data}) => {
-        commit('setVoteQuestion', data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    },
-
-    voteDownQx (payload) {
-      var config = {
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }
-      this.$http.put(`/questions/${payload.questionId}/votedown`, {
-        userId: payload.userId
-      }, config)
-      .then(({data}) => {
-        console.log('INI DATA BERKURANG', data);
-        commit('setVoteQuestion', data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    }
+      'getQuestions',
+      'voteUpQx',
+      'voteDownQx'
+    ])
   },
   created() {
     this.getQuestions()

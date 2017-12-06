@@ -25,8 +25,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'AnswerQuestion',
-      'vote_up'
+      'AnswerQuestion'
     ])
   },
   methods: {

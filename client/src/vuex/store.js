@@ -57,10 +57,59 @@ const mutations = {
     state.ArrAnswers.splice(idx, 1)
   },
   setVoteAnswer (state,payload) {
-
+    const idx = state.AnswerQuestion.findIndex((answer) => {
+      return answer._id === payload.answerId
+    })
+    const voteIdx = state.AnswerQuestion[idx].vote_up.findIndex((vote) => vote === payload.userId)
+    if (voteIdx === -1) {
+      state.AnswerQuestion[idx].vote_up.push(payload.userId)
+    } else {
+      alert('SUDAH VOTE MAS')
+    }
   },
-  setVoteQuestion (state,payload) {
-    state.vote_upx = payload
+  setUnvoteAnswer (state,payload) {
+    const idx = state.AnswerQuestion.findIndex((answer) => {
+    return answer._id === payload.answerId
+    })
+    const voteIdx = state.AnswerQuestion[idx].vote_up.findIndex((vote) => vote === payload.userId)
+    if (voteIdx === -1) {
+      alert('SUDAH VOTE MAS')
+    } else {
+      state.AnswerQuestion[idx].vote_up.splice(0,1)
+    }
+  },
+  setVoteQuestion (state, payload) {
+    // state.ArrQuestions.forEach((question, index) => {
+    //   if(question._id === payload.questionId) {
+    //     state.ArrQuestions[index].vote_up.push(payload.userId)
+    //   }
+    // })
+    //
+    const idx = state.ArrQuestions.findIndex((question) => {
+      // console.log('question ID nya ', question._id) // -1
+      // console.log('payload questid ', payload.questionId); // undefined
+    return question._id === payload.questionId
+    })
+    // // console.log('INI INDEX', idx);
+    // // console.log('INI ARTT INDEX', state.ArrQuestions[idx]);
+    const voteIdx = state.ArrQuestions[idx].vote_up.findIndex((vote) => vote === payload.userId)
+    console.log('INI VOTE INDEX', voteIdx);
+    if (voteIdx === -1) {
+      state.ArrQuestions[idx].vote_up.push(payload.userId)
+    } else {
+      alert('SUDAH VOTE MAS')
+    }
+  },
+  setUnvoteQuestion (state,payload) {
+    const idx = state.ArrQuestions.findIndex((question) => {
+    return question._id === payload.questionId
+    })
+    const voteIdx = state.ArrQuestions[idx].vote_up.findIndex((vote) => vote === payload.userId)
+    if (voteIdx === -1) {
+      alert('SUDAH VOTE MAS')
+    } else {
+      state.ArrQuestions[idx].vote_up.splice(0,1)
+    }
   },
   setLogin (state, payload) {
    if (typeof payload.objToken === 'object') {
@@ -232,7 +281,6 @@ const actions = {
         console.log('THIS IS ERROR CHECK LOGIN >> ' + JSON.stringify(err))
       })
   },
-
   voteUp ({ commit }, payload) {
     var config = {
       headers: {
@@ -244,7 +292,7 @@ const actions = {
       }, config)
       .then(({data}) => {
         console.log('INI MASUK BRO', data);
-       commit('setVoteAnswer', data)
+       commit('setVoteAnswer', payload)
       })
       .catch(err => {
         console.log(err)
@@ -261,7 +309,43 @@ const actions = {
     }, config)
     .then(({data}) => {
       console.log('INI DATA BERKURANG', data);
-      commit('setVoteAnswer', data)
+      commit('setUnvoteAnswer', payload)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  voteUpQx ({ commit }, payload) {
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/questions/${payload.questionId}/voteup`, {
+      userId: payload.userId
+    }, config)
+    .then(({data}) => {
+      commit('setVoteQuestion', payload)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  voteDownQx ({ commit },payload) {
+  console.log('INI DATA PAYLAOD', payload);
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/questions/${payload.questionId}/votedown`, {
+      userId: payload.userId
+    }, config)
+    .then(({data}) => {
+      console.log('INI DATA BERKURANG', data);
+      commit('setUnvoteQuestion', payload)
     })
     .catch(err => {
       console.log(err)

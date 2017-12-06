@@ -75,8 +75,6 @@ props: ['id'],
       'postAnswer',
       'getAllAnswer',
       'deleteAnswer'
-      // 'voteUpQx',
-      // 'voteDownQx'
     ]),
     postDua (payload) {
       this.postAnswer(payload)
