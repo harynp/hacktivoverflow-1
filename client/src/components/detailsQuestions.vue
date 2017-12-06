@@ -36,9 +36,7 @@
         </div>
       </div>
     </div>
-    <!-- KUMPULAN ANSWER -->
     <detailAnswerQuestion></detailAnswerQuestion>
-   <!--  -->
   </div>
 </template>
 

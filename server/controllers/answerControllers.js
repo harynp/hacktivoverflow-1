@@ -35,7 +35,19 @@ class answerController {
 
   static voteUp(req,res,next){
     answer.findByIdAndUpdate({_id:req.params.id},
-    {$push:{"vote_up": req.body.userId}
+    {$addToSet:{"vote_up": req.body.userId}
+    })
+    .then(rows=>{
+      res.status(200).send(rows);
+    })
+    .catch(err=>{
+      res.status(400).json(err)
+    })
+  }
+
+  static voteDown(req,res,next){
+    answer.findByIdAndUpdate({_id:req.params.id},
+    {$pull:{"vote_up": req.body.userId}
     })
     .then(rows=>{
       res.status(200).send(rows);

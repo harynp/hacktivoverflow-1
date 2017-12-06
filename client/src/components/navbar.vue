@@ -14,12 +14,6 @@
           <router-link to="/add-questions">+Question</router-link>
         </li>
       </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
         <li class="active" v-if="token">
           <a @click="logout">Logout</a>
