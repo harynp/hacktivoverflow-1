@@ -8,7 +8,11 @@
       </div>
       <div class="panel-body">
         {{ArrQuestionsById.content}}
+        <div class="pull-right">
+          Author: {{ArrQuestionsById.id_user.username}}
+        </div>
       </div>
+
     </div>
     <div class="pull-right">
       <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="vote(answer.id_user._id)"></button>
@@ -79,11 +83,6 @@ props: ['id'],
   created () {
     this.getQuestionsById(this.id)
     this.getAllAnswer(this.id)
-  },
-  watch: {
-    id: function (newId) {
-      this.getAllAnswer(newId)
-    }
   }
 }
 </script>

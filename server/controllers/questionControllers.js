@@ -3,8 +3,9 @@ const question = require('../models/questionModel')
 class questionControllers {
   static findAll(req, res) {
     question.find({})
-      .populate('id_user', '_id username email')
+      .populate('id_user')
       .then(data => {
+        console.log('ISI DATA GET QUESTION', data);
         res.status(200).send(data)
       })
       .catch(err => {
@@ -14,7 +15,7 @@ class questionControllers {
 
   static findById(req, res) {
     question.findById({_id: req.params.id})
-      .populate('id_user', '_id username email')
+      .populate('id_user', 'id username email')
       .then(data => {
         res.status(200).send(data)
       })

@@ -14,6 +14,7 @@ const state = {
     content: ''
   },
   AnswerQuestion: [],
+  vote_up: [],
   status: false,
   loginStatus: {
     status: false,
@@ -53,6 +54,10 @@ const mutations = {
   setDeleteAnswer (state,payload) {
     const idx = state.ArrAnswers.findIndex((answer) => answer._id === payload)
     state.ArrAnswers.splice(idx, 1)
+  },
+  setVoteAnswer (state,payload) {
+  const idx = state.ArrAnswers.findIndex((answer) => answer._id === payload)
+    state.ArrQuestions[idx].push(payload.userId)
   },
   setLogin (state, payload) {
    if (typeof payload.objToken === 'object') {
@@ -95,9 +100,13 @@ const actions = {
   },
 
   postQuestion ({commit}, newQuestion) {
-    http.post('/questions', newQuestion)
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.post('/questions', newQuestion, config)
     .then(({ data }) => {
-      console.log('INI DATA POST ACTIONS', data);
       commit('setPostQuestions', data)
     })
     .catch(err => {
@@ -219,6 +228,41 @@ const actions = {
         localStorage.clear()
         console.log('THIS IS ERROR CHECK LOGIN >> ' + JSON.stringify(err))
       })
+  },
+
+  voteUp ({ commit }, payload) {
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/answers/${payload.answerId}/voteup/`, {
+      userId: payload.userId
+      }, config)
+      .then(({data}) => {
+        console.log('INI MASUK BRO', data);
+       commit('setVoteAnswer', data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  voteDown ({ commit }, payload) {
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/answers/${payload.answerId}/votedown`, {
+      userId: payload.userId
+    }, config)
+    .then(({data}) => {
+      console.log('INI DATA BERKURANG', data);
+      commit('setVoteAnswer', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 }
 

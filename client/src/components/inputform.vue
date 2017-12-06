@@ -36,6 +36,7 @@ export default {
   data () {
     return {
     	form: {
+        id_user: localStorage.getItem('idUser'),
         title: '',
         content: ''
       }

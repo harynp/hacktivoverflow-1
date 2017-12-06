@@ -9,8 +9,11 @@
       <div class="panel-body">
         {{ question.content }}
         <div class="pull-right">
-          <button class="fa fa-trash btn btn-danger" type="button" name="button" @click="rmvQuestions(question)"></button>
-          <button class="fa fa-pencil-square-o btn btn-warning" data-toggle="modal" data-target=".bs-example-modal-lg"></button>
+          <div>
+            <button v-if="question.id_user._id === userId" class="fa fa-trash btn btn-danger" type="button" name="button" @click="rmvQuestions(question)"></button>
+            <button v-if="question.id_user._id === userId" class="fa fa-pencil-square-o btn btn-warning" data-toggle="modal" data-target=".bs-example-modal-lg"></button>
+              Author : {{ question.id_user.username }}
+          </div>
         </div>
       </div>
     </div>
@@ -29,6 +32,11 @@
 <script>
 import {mapState,mapActions} from 'vuex'
 export default {
+  data () {
+    return {
+      userId: localStorage.getItem('idUser')
+    }
+  },
   computed: {
   ...mapState([
     'ArrQuestions'
