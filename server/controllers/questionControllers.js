@@ -42,9 +42,8 @@ class questionControllers {
         $set: {
           title     : req.body.title,
           content   : req.body.content
-          // imgUrl	  : req.file.cloudStoragePublicUrl
         }
-      })
+      }, {new: true})
       .then(result => {
         res.status(200).send(result)
       })

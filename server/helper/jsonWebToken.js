@@ -8,8 +8,8 @@ require('dotenv').config()
         next()
       }
       else{
-          console.log(err)
-          res.send(err)
+        console.log(err)
+        res.send(err)
       }
     })
   }
@@ -25,7 +25,6 @@ require('dotenv').config()
       res.send("access denied")
     }
   }
-
 
 module.exports = {
   isLogin,

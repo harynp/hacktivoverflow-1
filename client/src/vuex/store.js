@@ -43,6 +43,12 @@ const mutations = {
     const idx = state.ArrQuestions.findIndex((question) => question._id === payload)
     state.ArrQuestions.splice(idx, 1)
   },
+  setEditQuestion (state,payload) {
+    const idx = state.ArrQuestions.findIndex((question) => {
+      return question._id === payload._id
+    })
+    state.ArrQuestions[idx] = payload
+  },
   setIdQuestions (state,payload) {
     state.ArrQuestionsById = payload
   },
@@ -53,8 +59,8 @@ const mutations = {
     state.ArrAnswers.push(payload)
   },
   setDeleteAnswer (state,payload) {
-    const idx = state.ArrAnswers.findIndex((answer) => answer._id === payload)
-    state.ArrAnswers.splice(idx, 1)
+    const idx = state.AnswerQuestion.findIndex((answer) => answer._id === payload)
+    state.AnswerQuestion.splice(idx, 1)
   },
   setVoteAnswer (state,payload) {
     const idx = state.AnswerQuestion.findIndex((answer) => {
@@ -167,7 +173,12 @@ const actions = {
   },
 
   rmvQuestions({commit}, idQuestions) {
-    http.delete(`/questions/${idQuestions._id}`)
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.delete(`/questions/${idQuestions._id}`, idQuestions, config)
     .then(({data}) => {
       commit('setDeleteQuestions', data)
     })
@@ -350,6 +361,28 @@ const actions = {
     .catch(err => {
       console.log(err)
     })
+  },
+
+  editQuestion ({commit}, payload) {
+    console.log('INI PAYLOAD EDIT',payload)
+    var config = {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }
+    http.put(`/questions/${payload.id_question}`, {
+      title: payload.title,
+      content: payload.content
+    }, config)
+    .then(({data}) => {
+      // console.log('INI DATA EDIT BRAY', data);
+      commit('setEditQuestion', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
+
   }
 }
 
