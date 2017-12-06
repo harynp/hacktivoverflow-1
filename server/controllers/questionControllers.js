@@ -106,7 +106,6 @@ class questionControllers {
         $push: { answer: req.body.id_answer }
       })
       .then(resultQuestion => {
-        console.log('hahahahha ' + JSON.stringify(resultQuestion))
         res.send(resultQuestion)
       })
       .catch(err => { console.log(err) })

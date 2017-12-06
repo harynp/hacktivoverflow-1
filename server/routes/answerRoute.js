@@ -12,5 +12,4 @@ router.delete('/:id', answerCtrl.remove, questionCtrl.pullAnswer)
 router.put('/:id/voteup', jwt.isLogin, answerCtrl.voteUp, answerCtrl.findByIdQuestion)
 router.put('/:id/votedown', jwt.isLogin, answerCtrl.voteDown, answerCtrl.findByIdQuestion)
 
-
 module.exports = router;

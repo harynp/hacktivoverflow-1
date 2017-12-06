@@ -5,7 +5,7 @@ import router from '../router'
 
 Vue.use(Vuex)
 const http = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://35.198.201.79'
 })
 
 const state = {
@@ -92,8 +92,6 @@ const mutations = {
     // })
     //
     const idx = state.ArrQuestions.findIndex((question) => {
-      // console.log('question ID nya ', question._id) // -1
-      // console.log('payload questid ', payload.questionId); // undefined
     return question._id === payload.questionId
     })
     // // console.log('INI INDEX', idx);
