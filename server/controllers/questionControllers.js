@@ -76,55 +76,35 @@ class questionControllers {
     })
   }
 
-  static voteUp (req,res,next) {
-    question.findOneAndUpdate(
-      {_id:req.body.id_question},
-      {$pull:{vote_down:req.body.id}}
-    )
-    .then(resultPull=>{
-      question.findOneAndUpdate(
-        { _id: req.body.id_question },
-        {$addToSet: { vote_up: req.body.id }}
-      )
-        .then(resultPush => {
-          next()
-        })
-        .catch(err => {
-          res.send(err)
-        })
+  static voteUp(req,res,next){
+    question.findByIdAndUpdate({_id:req.params.id},
+    {$addToSet:{"vote_up": req.body.userId}
+    })
+    .then(rows=>{
+      res.status(200).send(rows);
     })
     .catch(err=>{
-      res.send(err)
+      res.status(400).json(err)
     })
   }
 
-  static voteDown (req,res,next) {
-    question.updateOne(
-      { _id: req.body.id_question },
-      { $pull: { vote_up: req.body.id } }
-    )
-    .then(resultPull =>{
-      question.updateOne(
-        { _id: req.body.id_question },
-        { $addToSet: { vote_down: req.body.id } }
-      )
-        .then(resultPush => {
-          next()
-        })
-        .catch(err => {
-          res.send(err)
-        })
+  static voteDown(req,res,next){
+    question.findByIdAndUpdate({_id:req.params.id},
+    {$pull:{"vote_up": req.body.userId}
+    })
+    .then(rows=>{
+      res.status(200).send(rows);
     })
     .catch(err=>{
-      res.send(err)
+      res.status(400).json(err)
     })
   }
 
-  static pushAnswer (req,res) { // called in answer routes
+  static pushAnswer (req,res) {
     question.update(
-      { _id: req.body.id_question },//idQuestion
+      { _id: req.body.id_question },
       {
-        $push: { answer: req.body.id_answer }// idAnswer
+        $push: { answer: req.body.id_answer }
       })
       .then(resultQuestion => {
         console.log('hahahahha ' + JSON.stringify(resultQuestion))
@@ -133,11 +113,11 @@ class questionControllers {
       .catch(err => { console.log(err) })
   }
 
-  static pullAnswer (req,res) { // called in answer routes
+  static pullAnswer (req,res) {
     question.update(
-      { _id: req.body.id_question }, // id question
+      { _id: req.body.id_question },
       {
-        $pull: { answer: req.params.id } // id answer
+        $pull: { answer: req.params.id }
     })
     .then(hasil => {
       res.send(hasil)

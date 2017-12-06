@@ -9,14 +9,15 @@
       <div class="panel-body">
         {{ArrQuestionsById.content}}
         <div class="pull-right">
-          Author: {{ArrQuestionsById.id_user.username}}
+          <!-- Author: {{ArrQuestionsById.id_user.username}} -->
         </div>
       </div>
 
     </div>
-    <div class="pull-right">
-      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="vote(answer.id_user._id)"></button>
-    </div>
+    <!-- <div class="pull-right">
+      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="voteUpQx({questionId: ArrQuestionsById._id, userId:form.userId})"></button>
+      <button class="btn btn-info fa fa-thumbs-o-down" type="button" name="button" @click="voteDownQx({questionId: ArrQuestionsById._id, userId:form.userId})"></button>
+    </div> -->
     <button class="btn btn-danger" type="button" name="button" data-toggle="modal" data-target=".bs-example-modal-lg">ANSWER</button>
     </div>
     <!-- MODAL -->
@@ -25,17 +26,17 @@
         <div class="modal-content">
           <h2>FORM ANSWER</h2>
           <form class="form-horizontal" @submit.prevent="postDua(form)">
-              <div class="form-group">
-                <label for="textArea" class="col-lg-2 control-label">Answer</label>
-                <div class="col-lg-10">
-                  <textarea class="form-control" rows="3" ref="textArea" id="textArea" v-model='form.content'></textarea>
-                </div>
+            <div class="form-group">
+              <label for="textArea" class="col-lg-2 control-label">Answer</label>
+              <div class="col-lg-10">
+                <textarea class="form-control" rows="3" ref="textArea" id="textArea" v-model='form.content'></textarea>
               </div>
-              <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-2">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Send</button></div>
-              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Send</button></div>
+            </div>
           </form>
         </div>
       </div>
@@ -56,8 +57,7 @@ props: ['id'],
         userId: localStorage.getItem('idUser'),
         id_question: this.id
       },
-      name: localStorage.getItem('name'),
-      vote_up: []
+      name: localStorage.getItem('name')
     }
   },
   components: {
@@ -66,7 +66,7 @@ props: ['id'],
   computed: {
     ...mapState([
       'ArrQuestionsById',
-      'AnswerQuestion',
+      'AnswerQuestion'
     ])
   },
   methods: {
@@ -74,7 +74,9 @@ props: ['id'],
       'getQuestionsById',
       'postAnswer',
       'getAllAnswer',
-      'deleteAnswer',
+      'deleteAnswer'
+      // 'voteUpQx',
+      // 'voteDownQx'
     ]),
     postDua (payload) {
       this.postAnswer(payload)

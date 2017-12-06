@@ -3,7 +3,7 @@
     <div class="well" v-for="answer in AnswerQuestion">
      <i class="fa fa-user" aria-hidden="true"> {{answer.id_user.username}}</i>
      <div class="panel panel-default">
-         <h5>{{ answer.content}}</h5>
+       <h5>{{ answer.content}}</h5>
      </div>
       <div class="">
         <button v-if="answer.id_user._id === userId" class="btn btn-danger fa fa-trash-o" type="button" name="button" @click.prevent="deleteAnswer(answer._id)"></button>
@@ -37,6 +37,11 @@ export default {
       'voteUp',
       'voteDown'
     ])
+  },
+  watch: {
+    id: function (userId) {
+      this.getAllAnswer(userId)
+    }
   }
 }
 </script>

@@ -28,7 +28,8 @@ const state = {
   },
   userQuestion: null,
   vote_up: [],
-  vote_down: []
+  vote_down: [],
+  vote_upx: []
 }
 
 const mutations = {
@@ -56,8 +57,10 @@ const mutations = {
     state.ArrAnswers.splice(idx, 1)
   },
   setVoteAnswer (state,payload) {
-  const idx = state.ArrAnswers.findIndex((answer) => answer._id === payload)
-    state.ArrQuestions[idx].push(payload.userId)
+
+  },
+  setVoteQuestion (state,payload) {
+    state.vote_upx = payload
   },
   setLogin (state, payload) {
    if (typeof payload.objToken === 'object') {
