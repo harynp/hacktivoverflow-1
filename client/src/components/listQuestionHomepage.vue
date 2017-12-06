@@ -4,7 +4,7 @@
        <h1>LIST QUESTIONS</h1>
       <div class="panel panel-default" v-for="list in ArrQuestions">
         <div class="panel-body">
-          <router-link :to="{path:'/question-details/'+list._id}">{{ list.title }}</router-link>
+          <router-link class="fa fa-list-alt" :to="{path:'/question-details/'+list._id}"> {{ list.title }}</router-link>
         </div>
         <div class="panel-body">
           {{list.content}}

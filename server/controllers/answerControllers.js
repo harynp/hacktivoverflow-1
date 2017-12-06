@@ -33,58 +33,16 @@ class answerController {
     })
   }
 
-  // static voteUp (req,res,next) {
-  //   answer.findByIdAndUpdate(req.params.id,
-  //   {$push:{"like": req.body._id}},
-  //   {safe: true, upsert: true}
-  // )
-  // .then(rows=>{
-  //   res.status(200).json({
-  //     "message":"data updated",
-  //     "data":rows
-  //   });
-  // })
-  // .catch(err=>{
-  //   res.status(400).json(err)
-  // })
-  // }
-
   static voteUp(req,res,next){
-    answer.findByIdAndUpdate(req.params.id,
-      {$push:{"vote_up": req.body._id}},
-      {safe: true, upsert: true}
-    )
+    answer.findByIdAndUpdate({_id:req.params.id},
+    {$push:{"vote_up": req.body.userId}
+    })
     .then(rows=>{
-      res.status(200).json({
-        "message":"data updated",
-        "data":rows
-      });
+      res.status(200).send(rows);
     })
     .catch(err=>{
       res.status(400).json(err)
     })
-  }
-
-  static voteDown (req,res,next) {
-    answer.findOneAndUpdate(
-      { _id: req.body.id_answer },
-      { $pull: { vote_up: req.body.id } }
-    )
-      .then(result => {
-        answer.findOneAndUpdate(
-          { _id: req.body.id_answer },
-          { $addToSet: { vote_down: req.body.id } }
-        )
-          .then(result => {
-            next()
-          })
-          .catch(err => {
-            res.send(err)
-          })
-      })
-      .catch(err => {
-        res.send(err)
-      })
   }
 
   static remove (req,res,next) {

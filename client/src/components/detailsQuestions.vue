@@ -11,12 +11,7 @@
       </div>
     </div>
     <div class="pull-right">
-      <a class="like">
-        <i class="fa fa-thumbs-o-up"></i>  Like
-      </a>
-      <a class="dislike">
-        <i class="fa fa-thumbs-o-down"></i> Dislike
-      </a>
+      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="vote(answer.id_user._id)"></button>
     </div>
     <button class="btn btn-danger" type="button" name="button" data-toggle="modal" data-target=".bs-example-modal-lg">ANSWER</button>
     </div>
@@ -42,20 +37,14 @@
       </div>
     </div>
     <!-- KUMPULAN ANSWER -->
-    <div class="well" v-for="answer in AnswerQuestion">
-      <i class="fa fa-user" aria-hidden="true"> {{answer.id_user.username}}</i>
-     <div class="panel panel-default">
-         <h5>{{ answer.content }}</h5>
-     </div>
-      <button v-if="answer.id_user._id === form.userId" class="btn btn-danger fa fa-trash-o" type="button" name="button" @click.prevent="deleteAnswer(answer._id)"></button>
-      <button class="btn btn-info fa fa-thumbs-o-up" type="button" name="button" @click="vote(answer.id_user._id)"></button>
-    </div>
+    <detailAnswerQuestion></detailAnswerQuestion>
    <!--  -->
   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import detailAnswerQuestion from '@/components/detailAnswerQuestion'
 export default {
 props: ['id'],
   data () {
@@ -65,13 +54,17 @@ props: ['id'],
         userId: localStorage.getItem('idUser'),
         id_question: this.id
       },
-      name: localStorage.getItem('name')
+      name: localStorage.getItem('name'),
+      vote_up: []
     }
+  },
+  components: {
+    detailAnswerQuestion
   },
   computed: {
     ...mapState([
       'ArrQuestionsById',
-      'AnswerQuestion'
+      'AnswerQuestion',
     ])
   },
   methods: {
@@ -80,7 +73,6 @@ props: ['id'],
       'postAnswer',
       'getAllAnswer',
       'deleteAnswer',
-      'vote'
     ]),
     postDua (payload) {
       this.postAnswer(payload)

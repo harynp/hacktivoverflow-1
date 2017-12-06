@@ -219,21 +219,6 @@ const actions = {
         localStorage.clear()
         console.log('THIS IS ERROR CHECK LOGIN >> ' + JSON.stringify(err))
       })
-  },
-
-  vote ({commit}, payload) {
-    var config = {
-      headers: {
-        token: localStorage.getItem('token')
-      }
-    }
-    http.put(`/answers/voteup/${payload.id_question}`, payload, config)
-    .then(({data}) => {
-      console.log('TES',data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
   }
 }
 
